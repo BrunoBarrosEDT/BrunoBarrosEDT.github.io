@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secreto</title>
+    <link rel="icon" href="https://i.imgur.com/oP8odK1.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@400;600&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+            position: relative;
+        }
+        .container {
+            display: none;
+            text-align: center;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease-in-out;
+            max-width: 90%; /* Ajusta a largura para se adaptar em diferentes telas */
+            width: 500px; /* Largura fixa para manter a consistência */
+        }
+        .login-container {
+            display: block; /* Exibir o container de login inicialmente */
+        }
+        .login-container input, .login-container button {
+            margin: 10px;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background-color: #333;
+            color: #e0e0e0;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .login-container button {
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .login-container input:focus, .login-container button:hover {
+            background-color: #444;
+            border-color: #555; /* Melhorar o feedback visual ao focar ou passar o mouse */
+        }
+        .content-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        #timer {
+            font-size: 18px;
+            margin-top: 20px;
+            line-height: 1.5;
+            font-family: 'Montserrat', sans-serif;
+        }
+        #timer p {
+            margin: 0;
+        }
+        #divider {
+            border-top: 1px solid #333;
+            margin: 20px 0;
+            padding-top: 10px;
+        }
+        #errorMessage {
+            color: #ff5252;
+            font-family: 'Montserrat', sans-serif;
+        }
+        #textsButton {
+            display: none;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #333;
+            color: #e0e0e0;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+        #textsButton:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+    <button id="textsButton" onclick="window.location.href='textos.html'">Textos</button>
+
+    <div class="container login-container" id="loginContainer">
+        <input type="password" id="passwordInput" placeholder="Qual a senha?" aria-label="Senha">
+        <button onclick="checkPassword()">Entrar</button>
+        <p id="errorMessage"></p>
+    </div>
+
+    <div class="container content-container" id="contentContainer">
+        <h1>I Love You</h1>
+        <img src="https://i.imgur.com/wKHuMxn.jpeg" alt="Imagem">
+        <div id="timer">
+            <p>Acabou...</p>
+            <p>07/09/2024</p>
+        </div>
+        <div id="divider"></div>
+        <p>Bom, não sei se você ainda vai voltar aqui algum dia, mas infelizmente isso aconteceu um dia depois do meu aniversário.</p>
+        <p>Desculpe por tudo o que fiz de errado e por qualquer outra coisa que tenha feito você fazer isso comigo. Ass: Vini</p>
+    </div>
+
+    <script>
+        document.getElementById('loginContainer').style.display = 'block';
+
+        function checkPassword() {
+            const passwordInput = document.getElementById('passwordInput').value;
+            const correctPassword = 'princesa';
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (passwordInput === correctPassword) {
+                document.getElementById('loginContainer').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loginContainer').style.display = 'none';
+                    document.getElementById('contentContainer').style.display = 'block';
+                    document.getElementById('textsButton').style.display = 'block';
+                    document.getElementById('contentContainer').style.opacity = '1';
+                }, 300); // Tempo para a transição de opacidade
+                startTimer();
+            } else {
+                errorMessage.textContent = 'Senha incorreta';
+            }
+        }
+
+        function startTimer() {
+            const targetTime = new Date('2024-06-15T20:00:00');
+
+            function updateTimer() {
+                const now = new Date();
+                const elapsed = now - targetTime;
+                const years = Math.floor(elapsed / (1000 * 60 * 60 * 24 * 365));
+                const months = Math.floor((elapsed % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30.44));
+                const days = Math.floor((elapsed % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+
+                document.getElementById('timeDetails').innerHTML = `
+                    ${years} Anos, ${months} Meses, ${days} Dias<br>
+                    ${hours} Horas, ${minutes} Minutos e ${seconds} Segundos
+                `;
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Textos</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@400;600&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+        }
+        #backButton {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #333;
+            color: #e0e0e0;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        #backButton:hover {
+            background-color: #444;
+            transform: scale(1.05);
+        }
+        .text-section {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .text-section h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            margin-top: 0;
+        }
+        .text-section p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        @media (max-width: 600px) {
+            #backButton {
+                width: 100%;
+            }
+            .text-section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button id="backButton" onclick="window.location.href='index.html'">Voltar</button>
+
+    <div class="text-section">
+        <h2>20/08/2024</h2>
+        <p>Você não tem mais acesso a isso...</p>
+    </div>
+
+    <!-- Adicione mais seções de texto conforme necessário -->
+</body>
+</html>
