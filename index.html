@@ -50,7 +50,14 @@
             display: grid;
             grid-template-columns: repeat(3, 120px);
             grid-gap: 20px;
-            margin-top: 20px;
+            margin-top: 10px; /* Diminuí a margem entre as seções */
+        }
+        .top-container {
+            display: grid;
+            grid-template-columns: repeat(2, 120px);
+            grid-gap: 20px;
+            justify-content: center;
+            margin-bottom: 10px; /* Diminuí a margem entre os botões superiores e a seção inferior */
         }
         .button {
             width: 120px;
@@ -92,7 +99,7 @@
     Prazer me chamo Nwask.<br><br>Tenho 16 anos, moro em São Paulo, tenho um servidor no Discord focado Hardware Hacking e sou Apenas um Garoto que gosta de Novidades da Tecnologia.<br><br> Faço codigos de BadUSB em <u>PowerShell</u>, e outros códigos/scripts simples como Remix de outros códigos para fazer melhorias.
 </div>
 
-<div class="container">
+<div class="top-container">
     <button class="button" onclick="window.location.href='https://brunobarrosedt.github.io/eusoubonito/'">
         <i class="fas fa-star icon"></i>
         <br>
@@ -103,11 +110,9 @@
         <br>
         Secreto
     </button>
-    <button class="button" onclick="window.location.href='https://brunobarrosedt.github.io/ListaTarefas/'">
-        <i class="fas fa-tasks icon"></i>
-        <br>
-        Lista de Tarefas
-    </button>
+</div>
+
+<div class="container">
     <button class="button" onclick="window.location.href='https://github.com/BrunoBarrosEDT'">
         <i class="fab fa-github icon"></i>
         <br>
