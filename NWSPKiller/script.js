@@ -1,13 +1,19 @@
 let notificationCount = 0;
-const proxyUrl = 'https://cors-anywhere.herokuapp.com/'; // Proxy para CORS
+const proxies = [
+    'https://cors-anywhere.herokuapp.com/',
+];
+
+function getRandomProxy() {
+    return proxies[Math.floor(Math.random() * proxies.length)];
+}
 
 function createAndShowNotification(message) {
     return new Promise((resolve) => {
         const notification = document.createElement("div");
-        notification.id = `notification-${notificationCount}`; 
+        notification.id = `notification-${notificationCount}`;
         notification.className = "notification";
-        notification.style.bottom = `${20 + notificationCount * 70}px`; 
-        notification.style.right = "20px"; 
+        notification.style.bottom = `${20 + notificationCount * 70}px`;
+        notification.style.right = "20px";
         notification.innerHTML = `
             <div class="notification-content">
                 <p align="center">${message}</p>
@@ -18,7 +24,7 @@ function createAndShowNotification(message) {
         notificationCount++;
 
         setTimeout(() => notification.style.right = "20px", 10);
-        setTimeout(() => closeNotification(notification, resolve), 3000);
+        setTimeout(() => closeNotification(notification, resolve), 6000);
     });
 }
 
@@ -26,8 +32,8 @@ function closeNotification(notification, resolve) {
     notification.style.right = "-300px";
     setTimeout(() => {
         notification.style.display = "none";
-        notificationCount--; 
-        resolve(); 
+        notificationCount--;
+        resolve();
     }, 500);
 }
 
@@ -36,13 +42,14 @@ function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function fetchLessons(ra, password) {
+async function fetchLessons(ra, password, damn) {
     const encodedRa = encodeURIComponent(ra);
     const encodedPassword = encodeURIComponent(password);
-    
+    const proxyUrl = getRandomProxy(); // Usar um proxy aleatório
+
     try {
-        const response = await fetch(`${proxyUrl}https://cmsp-cheeto-v2.vercel.app/getinfo?ra=${encodedRa}&password=${encodedPassword}`);
-        if (!response.ok) throw new Error('Erro ao logar na conta<br>Tente ativar a proxy!');
+        const response = await fetch(`${proxyUrl}https://cmsp-cheeto-v2.vercel.app/getporra?ra=${encodedRa}&password=${encodedPassword}&porra=${damn}`);
+        if (!response.ok) throw new Error('Erro ao logar na conta!');
 
         const data = await response.json();
         if (!data.x_auth_key || !data.room_code) throw new Error('Dados inválidos retornados.');
@@ -58,13 +65,13 @@ async function handleLessons(lessons, x_auth_key, room_code) {
     for (const lesson of lessons) {
         const titleUpper = lesson.title.toUpperCase();
         if (titleUpper.includes("PROVA PAULISTA") || titleUpper.includes("SARESP") || titleUpper.includes("RECUPERAÇÃO")) {
-            await createAndShowNotification(`Ignorando: ${lesson.title}`);
-            continue; 
+            continue;
         }
-        
+
         console.log(`Fazendo: ${lesson.title}`);
         
-        const response = await fetch(`${proxyUrl}https://cmsp-cheeto-v2.vercel.app/dolesson?x_auth_key=${x_auth_key}&room_code=${room_code}&lesson_id=${lesson.id}`);
+        const proxyUrl = getRandomProxy(); // Usar um proxy aleatório
+        const response = await fetch(`${proxyUrl}https://cmsp-cheeto-v2.vercel.app/dolesso?x_auth_key=${x_auth_key}&room_code=${room_code}&lesson_id=${lesson.id}`);
         if (!response.ok) {
             await createAndShowNotification(`Erro ao fazer a atividade ${lesson.title}. Tente novamente.`);
         }
@@ -80,7 +87,7 @@ async function fazerLicoes(ra, password) {
         return;
     }
 
-    await createAndShowNotification("Puxando informações...");
+    await createAndShowNotification("Puxando informações... Aguarde!");
     
     const userData = await fetchLessons(ra, password);
     if (!userData) return;
@@ -88,14 +95,14 @@ async function fazerLicoes(ra, password) {
     const { x_auth_key, room_code } = userData;
 
     const lessonsResponse = await Promise.all([
-        fetch(`${proxyUrl}https://cmsp-cheeto-v2.vercel.app/getlesson_normal?x_auth_key=${x_auth_key}&room_code=${room_code}`),
-        fetch(`${proxyUrl}https://cmsp-cheeto-v2.vercel.app/getlesson_expired?x_auth_key=${x_auth_key}&room_code=${room_code}`)
+        fetch(`${getRandomProxy()}https://cmsp-cheeto-v2.vercel.app/getlesson_normal?x_auth_key=${x_auth_key}&room_code=${room_code}`),
+        fetch(`${getRandomProxy()}https://cmsp-cheeto-v2.vercel.app/getlesson_expired?x_auth_key=${x_auth_key}&room_code=${room_code}`)
     ]);
 
     const lessonsData = await Promise.all(lessonsResponse.map(res => res.text()));
     const allLessons = lessonsData.flatMap((lesson) => lesson === '[]' ? [] : JSON.parse(lesson));
     
-    await createAndShowNotification("Tarefas carregadas com sucesso!");
+    await createAndShowNotification("Fazendo tarefas aguarde...<br>( Isso pode demorar bastante dependendo o quanto de tarefas você tem! )");
     await handleLessons(allLessons, x_auth_key, room_code);
 }
 
@@ -114,11 +121,6 @@ document.getElementById('credits-btn').onclick = function() {
 // Evento de fechar o modal de créditos
 document.getElementById('close-modal').onclick = function() {
     document.getElementById('credits-modal').style.display = 'none';
-};
-
-// Evento do botão Ativar Proxy
-document.getElementById('proxy-btn').onclick = function() {
-    window.open('https://cors-anywhere.herokuapp.com/corsdemo', '_blank');
 };
 
 // Mostrar o modal de aviso ao carregar a página
